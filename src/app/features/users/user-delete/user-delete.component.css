@@ -1,0 +1,248 @@
+/* src/app/features/users/user-delete/user-delete.component.css */
+
+.user-delete-root {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Header */
+
+.user-delete-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.user-delete-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #fecaca;
+}
+
+.user-delete-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #fca5a5;
+  max-width: 520px;
+}
+
+.user-delete-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.12s ease;
+}
+
+.user-delete-back:hover {
+  background: rgba(15, 23, 42, 1);
+  border-color: rgba(148, 163, 184, 1);
+  transform: translateY(-1px);
+}
+
+/* Card */
+
+.user-delete-card {
+  border-radius: 18px;
+  padding: 16px 16px 18px;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(248, 113, 113, 0.6);
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.85),
+    0 0 0 1px rgba(15, 23, 42, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Warning */
+
+.user-delete-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(248, 113, 113, 0.8);
+  color: #fecaca;
+}
+
+.warning-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.warning-text {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+/* Info */
+
+.user-delete-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-delete-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-delete-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 113, 113, 0.9);
+  background: radial-gradient(circle at 20% 20%, #f97373, #b91c1c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fef2f2;
+}
+
+.user-delete-name-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-delete-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fef2f2;
+}
+
+.user-delete-id {
+  font-size: 12px;
+  color: #fecaca;
+}
+
+/* Grid */
+
+.user-delete-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+
+.user-delete-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.field-label {
+  font-size: 11px;
+  color: #fecaca;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-value {
+  font-size: 13px;
+  color: #fee2e2;
+}
+
+/* Feedback */
+
+.user-delete-feedback {
+  margin-top: 4px;
+}
+
+.feedback {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.feedback-error {
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+}
+
+/* Actions */
+
+.user-delete-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-danger,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.btn-danger {
+  border-color: rgba(248, 113, 113, 0.85);
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.28);
+}
+
+.btn-danger:hover {
+  background: rgba(127, 29, 29, 0.4);
+}
+
+.btn-outline {
+  border-color: rgba(148, 163, 184, 0.8);
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.btn-outline:hover {
+  background: rgba(15, 23, 42, 1);
+  border-color: rgba(148, 163, 184, 1);
+}
+
+/* Not found reaproveita estilo da detail */
+.user-detail-notfound {
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px dashed rgba(148, 163, 184, 0.7);
+  color: #9ca3af;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Responsivo */
+
+@media (max-width: 768px) {
+  .user-delete-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .user-delete-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

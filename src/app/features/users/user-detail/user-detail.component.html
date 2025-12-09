@@ -1,0 +1,154 @@
+<!-- src/app/features/users/user-detail/user-detail.component.html -->
+
+<section class="user-detail-root" *ngIf="!notFound(); else notFoundTpl">
+  <header class="user-detail-header">
+    <div>
+      <h1 class="user-detail-title">Detalhes do Usuário</h1>
+      <p class="user-detail-subtitle">
+        Visualize informações de perfil, papel e situação de atividade deste usuário.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="user-detail-back"
+      (click)="handleBack()"
+    >
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Voltar para lista</span>
+    </button>
+  </header>
+
+  <div class="user-detail-card" *ngIf="user() as u">
+    <div class="user-detail-main">
+      <!-- Avatar + nome -->
+      <div class="user-detail-identity">
+        <div class="user-detail-avatar">
+          {{ userInitial }}
+        </div>
+
+        <div class="user-detail-name-block">
+          <h2 class="user-detail-name">
+            {{ u.name }}
+          </h2>
+          <p class="user-detail-id">
+            ID #{{ u.id }}
+          </p>
+
+          <div class="user-detail-pills">
+            <span class="pill pill-role">
+              <lucide-angular
+                [img]="roleIcon"
+                size="14"
+                strokeWidth="2.4"
+              ></lucide-angular>
+              <span>{{ roleLabel }}</span>
+            </span>
+
+            <span
+              class="pill"
+              [class.pill-active]="u.isActive"
+              [class.pill-inactive]="!u.isActive"
+            >
+              <lucide-angular
+                [img]="activityIcon"
+                size="14"
+                strokeWidth="2.4"
+              ></lucide-angular>
+              <span>{{ u.isActive ? 'Ativo' : 'Inativo' }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações principais -->
+      <div class="user-detail-actions-main">
+        <a
+          class="btn-outline"
+          [routerLink]="['/users', u.id, 'edit']"
+        >
+          <lucide-angular
+            [img]="editIcon"
+            size="16"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Editar usuário</span>
+        </a>
+
+        <a
+          class="btn-danger"
+          [routerLink]="['/users', u.id, 'delete']"
+        >
+          <lucide-angular
+            [img]="deleteIcon"
+            size="16"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Excluir usuário</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Grid de detalhes -->
+    <div class="user-detail-grid">
+      <div class="user-detail-field">
+        <span class="field-label">
+          <lucide-angular
+            [img]="mailIcon"
+            size="14"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>E-mail</span>
+        </span>
+        <span class="field-value">
+          {{ u.email }}
+        </span>
+      </div>
+
+      <div class="user-detail-field">
+        <span class="field-label">
+          <lucide-angular
+            [img]="userIcon"
+            size="14"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Papel</span>
+        </span>
+        <span class="field-value">
+          {{ u.role }} • {{ roleLabel }}
+        </span>
+      </div>
+
+      <div class="user-detail-field">
+        <span class="field-label">
+          Status
+        </span>
+        <span class="field-value">
+          {{ u.isActive ? 'Usuário está ativo e pode receber tarefas.' : 'Usuário inativo. Evite atribuir novas tarefas.' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="user-detail-notfound">
+    <p>Usuário não encontrado. Verifique o endereço ou volte para a lista.</p>
+    <button
+      type="button"
+      class="btn-outline"
+      (click)="handleBack()"
+    >
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Voltar para usuários</span>
+    </button>
+  </section>
+</ng-template>

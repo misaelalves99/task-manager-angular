@@ -1,0 +1,91 @@
+<!-- src/app/features/users/user-list/user-list.component.html -->
+
+<section class="users-root">
+  <header class="users-header">
+    <div>
+      <h1 class="users-title">Usuários</h1>
+      <p class="users-subtitle">
+        Usuários de exemplo criados pelo seed. Cada um pode ser responsável
+        por tarefas (DEV, QA, DOC).
+      </p>
+    </div>
+
+    <div class="users-actions">
+      <a
+        routerLink="/users/new"
+        class="users-new-button"
+      >
+        <lucide-angular
+          [img]="addUserIcon"
+          size="16"
+          strokeWidth="2.4"
+          class="users-new-icon"
+        ></lucide-angular>
+        <span>Novo usuário</span>
+      </a>
+
+      <div class="users-counter">
+        Total: {{ users().length }}
+      </div>
+    </div>
+  </header>
+
+  <div class="users-card" *ngIf="users().length; else emptyState">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Papel</th>
+          <th>Ativo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users()">
+          <td>#{{ user.id }}</td>
+
+          <!-- NOME CLICÁVEL → /users/:id -->
+          <td class="cell-name">
+            <a
+              [routerLink]="['/users', user.id]"
+              class="user-name-wrapper user-link"
+            >
+              <div class="user-avatar">
+                {{ user.name.charAt(0) | uppercase }}
+              </div>
+              <div class="user-name-block">
+                <span class="user-name">{{ user.name }}</span>
+                <span class="user-email-mobile">{{ user.email }}</span>
+              </div>
+            </a>
+          </td>
+
+          <td class="cell-email">
+            {{ user.email }}
+          </td>
+          <td>
+            <span class="pill pill-role">
+              {{ user.role }}
+            </span>
+          </td>
+          <td>
+            <span
+              class="pill"
+              [class.pill-active]="user.isActive"
+              [class.pill-inactive]="!user.isActive"
+            >
+              {{ user.isActive ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="users-empty">
+      <p>Nenhum usuário encontrado. Verifique se o seed foi executado.</p>
+    </div>
+  </ng-template>
+</section>

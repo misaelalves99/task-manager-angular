@@ -1,0 +1,169 @@
+<!-- src/app/features/users/user-edit/user-edit.component.html -->
+
+<section class="user-form-root" *ngIf="!notFound; else notFoundTpl">
+  <header class="user-form-header">
+    <div>
+      <h1 class="user-form-title">Editar Usuário</h1>
+      <p class="user-form-subtitle">
+        Atualize os dados de perfil, papel e situação de atividade deste usuário.
+      </p>
+    </div>
+
+    <a
+      [routerLink]="userId != null ? ['/users', userId] : ['/users']"
+      class="user-form-back"
+    >
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Voltar para detalhes</span>
+    </a>
+  </header>
+
+  <div class="user-form-card">
+    <form (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-grid">
+        <!-- Nome -->
+        <div class="form-field">
+          <label for="name">Nome completo</label>
+          <div class="field-control with-icon">
+            <lucide-angular
+              [img]="userIcon"
+              size="16"
+              strokeWidth="2.4"
+              class="field-icon"
+            ></lucide-angular>
+
+            <input
+              id="name"
+              name="name"
+              type="text"
+              [(ngModel)]="name"
+              placeholder="Ex: Ana Desenvolvedora"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- E-mail -->
+        <div class="form-field">
+          <label for="email">E-mail</label>
+          <div class="field-control with-icon">
+            <lucide-angular
+              [img]="mailIcon"
+              size="16"
+              strokeWidth="2.4"
+              class="field-icon"
+            ></lucide-angular>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              placeholder="ana.dev@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Papel -->
+        <div class="form-field">
+          <label for="role">Papel</label>
+          <div class="field-control with-icon">
+            <lucide-angular
+              [img]="roleIcon"
+              size="16"
+              strokeWidth="2.4"
+              class="field-icon"
+            ></lucide-angular>
+
+            <select
+              id="role"
+              name="role"
+              [(ngModel)]="role"
+            >
+              <option *ngFor="let r of roles" [ngValue]="r">
+                {{ r }}
+              </option>
+            </select>
+          </div>
+          <small class="field-hint">
+            DEV: desenvolvimento • QA: qualidade • DOC: documentação
+          </small>
+        </div>
+
+        <!-- Ativo -->
+        <div class="form-field form-field-inline">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              name="isActive"
+              [(ngModel)]="isActive"
+            />
+            <span>Usuário ativo</span>
+          </label>
+          <small class="field-hint">
+            Usuários inativos não devem receber novas tarefas (regra conceitual).
+          </small>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div
+        class="user-form-feedback"
+        *ngIf="errorMessage || successMessage"
+      >
+        <p *ngIf="errorMessage" class="feedback feedback-error">
+          {{ errorMessage }}
+        </p>
+        <p *ngIf="successMessage" class="feedback feedback-success">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="user-form-actions">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isSubmitting"
+        >
+          <lucide-angular
+            [img]="saveIcon"
+            size="16"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>
+            {{ isSubmitting ? 'Salvando alterações...' : 'Salvar alterações' }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost"
+          (click)="onCancel()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="user-detail-notfound">
+    <p>Usuário não encontrado. Verifique o endereço ou volte para a lista.</p>
+    <a routerLink="/users" class="btn-outline">
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Voltar para usuários</span>
+    </a>
+  </section>
+</ng-template>

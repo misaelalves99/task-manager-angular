@@ -1,0 +1,120 @@
+<!-- src/app/features/tags/tag-create/tag-create.component.html -->
+
+<section class="tag-create-root">
+  <header class="tag-create-header">
+    <div>
+      <h1 class="tag-create-title">Nova Tag</h1>
+      <p class="tag-create-subtitle">
+        Crie uma nova etiqueta para organizar melhor suas tarefas
+        (tipo e prioridade).
+      </p>
+    </div>
+
+    <div class="tag-create-meta">
+      <span class="tag-create-chip">
+        Gestão de metadados • Tags do Task Manager
+      </span>
+    </div>
+  </header>
+
+  <div class="tag-create-card">
+    <form class="tag-create-form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Nome da tag -->
+      <div class="form-field">
+        <label for="name">Nome da Tag</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Ex.: BUG, FEATURE, DOCUMENTATION, LOW, HIGH..."
+          autocomplete="off"
+          required
+        />
+        <p class="field-hint">
+          Use nomes curtos e descritivos. Exemplo:
+          <code>BUG</code>, <code>FEATURE</code>, <code>DOCUMENTATION</code>,
+          <code>LOW</code>, <code>HIGH</code>.
+        </p>
+      </div>
+
+      <!-- Categoria da tag -->
+      <div class="form-field">
+        <label for="category">Categoria</label>
+        <select id="category" name="category" [(ngModel)]="category">
+          <option
+            *ngFor="let option of categoryOptions"
+            [ngValue]="option.value"
+          >
+            {{ option.label }}
+          </option>
+        </select>
+        <p class="field-hint">
+          Tags de <strong>Tipo</strong> aparecem no dropdown
+          "Tipo de tarefa". Tags de <strong>Prioridade</strong> aparecem no
+          dropdown "Prioridade" ao criar tarefas.
+        </p>
+      </div>
+
+      <!-- Cor da tag -->
+      <div class="form-field form-field-inline">
+        <div class="form-field-color">
+          <label for="color">Cor</label>
+          <div class="color-row">
+            <input
+              id="color"
+              type="color"
+              name="color"
+              [(ngModel)]="color"
+            />
+
+            <input
+              type="text"
+              name="colorHex"
+              [(ngModel)]="color"
+              [ngModelOptions]="{ standalone: true }"
+              class="color-hex-input"
+              placeholder="#22c55e"
+            />
+
+            <span
+              class="color-preview-pill"
+              [style.background-color]="color"
+            ></span>
+          </div>
+          <p class="field-hint">
+            Defina um hex válido. Ex.: <code>#e74c3c</code>,
+            <code>#3498db</code>, <code>#2ecc71</code>, <code>#FFFF00</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="form-feedback" *ngIf="errorMessage || successMessage">
+        <p *ngIf="errorMessage" class="feedback feedback-error">
+          {{ errorMessage }}
+        </p>
+        <p *ngIf="successMessage" class="feedback feedback-success">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Salvar Tag</span>
+          <span *ngIf="isSubmitting">Salvando...</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost"
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

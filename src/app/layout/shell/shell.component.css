@@ -1,0 +1,54 @@
+/* src/app/layout/shell/shell.component.css */
+
+.shell-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  backdrop-filter: blur(14px);
+}
+
+/* Área abaixo da toolbar */
+.shell-body {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: calc(100vh - 64px);
+}
+
+/* Sidebar fixa à esquerda */
+.shell-sidebar {
+  border-right: 1px solid rgba(148, 163, 184, 0.35);
+  background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.95),
+      rgba(15, 23, 42, 0.98)
+    );
+  padding: 16px 12px;
+}
+
+/* Conteúdo principal */
+.shell-content {
+  padding: 20px 24px;
+  overflow: auto;
+}
+
+.shell-content-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 0 40px;
+}
+
+/* Responsividade: colapsa sidebar em telas menores */
+@media (max-width: 960px) {
+  .shell-body {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+
+  .shell-sidebar {
+    display: none;
+  }
+
+  .shell-content {
+    padding: 16px;
+  }
+}

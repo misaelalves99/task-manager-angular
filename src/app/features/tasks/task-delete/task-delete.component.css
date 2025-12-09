@@ -1,0 +1,145 @@
+/* src/app/features/tasks/task-delete/task-delete.component.css */
+
+.task-delete-root {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.task-delete-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.back-link {
+  border: none;
+  padding: 0;
+  background: none;
+  color: #93c5fd;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: #9ca3af;
+  max-width: 520px;
+}
+
+.task-delete-card {
+  border-radius: 16px;
+  padding: 16px 16px 14px;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(15, 23, 42, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-summary-header {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.task-id {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.task-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.task-description {
+  font-size: 13px;
+  color: #e5e7eb;
+  margin-top: 2px;
+}
+
+.delete-warning {
+  font-size: 13px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.9);
+  padding: 8px 10px;
+}
+
+.delete-error {
+  font-size: 12px;
+  color: #fecaca;
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Botões - reaproveitando estilos */
+.btn-action {
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.12s ease,
+    box-shadow 0.18s ease;
+}
+
+.btn-secondary {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.8);
+  color: #e5e7eb;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(30, 64, 175, 0.35);
+  border-color: rgba(129, 140, 248, 0.9);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: radial-gradient(circle at 10% 0%, #ef4444, #b91c1c);
+  color: #fee2e2;
+  border-color: rgba(248, 113, 113, 0.9);
+  box-shadow:
+    0 14px 30px rgba(248, 113, 113, 0.5),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+.btn-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 36px rgba(248, 113, 113, 0.6),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+}

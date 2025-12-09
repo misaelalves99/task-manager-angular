@@ -1,0 +1,140 @@
+<!-- src/app/features/users/user-delete/user-delete.component.html -->
+
+<section class="user-delete-root" *ngIf="!notFound(); else notFoundTpl">
+  <header class="user-delete-header">
+    <div class="user-delete-title-block">
+      <h1 class="user-delete-title">Excluir Usuário</h1>
+      <p class="user-delete-subtitle">
+        Esta ação é permanente para a base em memória deste Task Manager. Confirme os dados antes de excluir.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="user-delete-back"
+      (click)="onCancel()"
+    >
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Cancelar</span>
+    </button>
+  </header>
+
+  <div class="user-delete-card" *ngIf="user() as u">
+    <div class="user-delete-warning">
+      <lucide-angular
+        [img]="warningIcon"
+        size="18"
+        strokeWidth="2.6"
+      ></lucide-angular>
+      <div>
+        <p class="warning-title">Tem certeza que deseja excluir este usuário?</p>
+        <p class="warning-text">
+          Depois de confirmar, o usuário será removido da lista atual. As tarefas existentes
+          continuarão em memória, mas sem vínculo lógico com este usuário (é apenas um exemplo didático).
+        </p>
+      </div>
+    </div>
+
+    <div class="user-delete-info">
+      <div class="user-delete-identity">
+        <div class="user-delete-avatar">
+          {{ userInitial }}
+        </div>
+        <div class="user-delete-name-block">
+          <h2 class="user-delete-name">{{ u.name }}</h2>
+          <p class="user-delete-id">ID #{{ u.id }}</p>
+        </div>
+      </div>
+
+      <div class="user-delete-grid">
+        <div class="user-delete-field">
+          <span class="field-label">
+            <lucide-angular
+              [img]="mailIcon"
+              size="14"
+              strokeWidth="2.4"
+            ></lucide-angular>
+            <span>E-mail</span>
+          </span>
+          <span class="field-value">{{ u.email }}</span>
+        </div>
+
+        <div class="user-delete-field">
+          <span class="field-label">
+            <lucide-angular
+              [img]="roleIcon"
+              size="14"
+              strokeWidth="2.4"
+            ></lucide-angular>
+            <span>Papel</span>
+          </span>
+          <span class="field-value">{{ u.role }}</span>
+        </div>
+
+        <div class="user-delete-field">
+          <span class="field-label">
+            Status
+          </span>
+          <span class="field-value">
+            {{ u.isActive ? 'Ativo' : 'Inativo' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-delete-feedback" *ngIf="errorMessage()">
+      <p class="feedback feedback-error">
+        {{ errorMessage() }}
+      </p>
+    </div>
+
+    <div class="user-delete-actions">
+      <button
+        type="button"
+        class="btn-danger"
+        (click)="onConfirmDelete()"
+        [disabled]="isDeleting()"
+      >
+        <lucide-angular
+          [img]="deleteIcon"
+          size="16"
+          strokeWidth="2.4"
+        ></lucide-angular>
+        <span>
+          {{ isDeleting() ? 'Excluindo...' : 'Confirmar exclusão' }}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="btn-outline"
+        (click)="onCancel()"
+      >
+        <lucide-angular
+          [img]="backIcon"
+          size="16"
+          strokeWidth="2.4"
+        ></lucide-angular>
+        <span>Cancelar</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="user-detail-notfound">
+    <p>Usuário não encontrado. Verifique o endereço ou volte para a lista.</p>
+    <a routerLink="/users" class="btn-outline">
+      <lucide-angular
+        [img]="backIcon"
+        size="16"
+        strokeWidth="2.4"
+      ></lucide-angular>
+      <span>Voltar para usuários</span>
+    </a>
+  </section>
+</ng-template>

@@ -1,0 +1,122 @@
+<!-- src/app/features/tags/tag-edit/tag-edit.component.html -->
+
+<section class="tag-edit-root" *ngIf="tag; else notFound">
+  <header class="tag-edit-header">
+    <div>
+      <h1 class="tag-edit-title">Editar Tag</h1>
+      <p class="tag-edit-subtitle">
+        Ajuste o nome, cor e categoria da tag selecionada.
+      </p>
+    </div>
+
+    <div class="tag-edit-meta">
+      <span class="tag-edit-chip">
+        ID #{{ tag?.id }}
+      </span>
+    </div>
+  </header>
+
+  <div class="tag-edit-card">
+    <form class="tag-edit-form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Nome -->
+      <div class="form-field">
+        <label for="name">Nome</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          required
+        />
+        <p class="field-hint">
+          Ex.: <code>BUG</code>, <code>FEATURE</code>,
+          <code>MUITO ALTO</code>, <code>ATUALIZAÇÃO</code>, etc.
+        </p>
+      </div>
+
+      <!-- Cor -->
+      <div class="form-field form-field-inline">
+        <div class="form-field-half">
+          <label for="color">Cor</label>
+          <input
+            id="color"
+            type="color"
+            name="color"
+            [(ngModel)]="color"
+          />
+        </div>
+
+        <div class="form-field-half">
+          <label>Preview</label>
+          <div class="tag-preview-row">
+            <span
+              class="pill"
+              [style.background-color]="color"
+            >
+              {{ name || 'Pré-visualização' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categoria -->
+      <div class="form-field">
+        <label for="category">Categoria</label>
+        <select
+          id="category"
+          name="category"
+          [(ngModel)]="category"
+        >
+          <option value="TYPE">TYPE (Tipo de tarefa)</option>
+          <option value="PRIORITY">PRIORITY (Prioridade)</option>
+          <option value="GENERIC">GENERIC (Genérica)</option>
+        </select>
+        <p class="field-hint">
+          A categoria controla onde a tag aparece nos cadastros:
+          tipo da tarefa, prioridade, ou apenas como marcação genérica.
+        </p>
+      </div>
+
+      <!-- Feedback -->
+      <div class="form-feedback" *ngIf="errorMessage || successMessage">
+        <p *ngIf="errorMessage" class="feedback feedback-error">
+          {{ errorMessage }}
+        </p>
+        <p *ngIf="successMessage" class="feedback feedback-success">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isSaving"
+        >
+          <span *ngIf="!isSaving">Salvar alterações</span>
+          <span *ngIf="isSaving">Salvando...</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost"
+          (click)="onCancel()"
+          [disabled]="isSaving"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<ng-template #notFound>
+  <div class="tag-edit-not-found">
+    <h2>Tag não encontrada</h2>
+    <p>
+      Verifique se o endereço está correto ou volte para a lista de tags.
+    </p>
+    <a [routerLink]="['/tags']" class="btn-back">Voltar para Tags</a>
+  </div>
+</ng-template>

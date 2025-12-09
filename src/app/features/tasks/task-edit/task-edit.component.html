@@ -1,0 +1,270 @@
+<!-- src/app/features/tasks/task-edit/task-edit.component.html -->
+
+<section class="task-edit-root" *ngIf="!isLoading; else loadingTpl">
+  <ng-container *ngIf="hasTask; else notFoundTpl">
+    <header class="task-edit-header">
+      <div>
+        <button type="button" class="back-link" (click)="onCancel()">
+          ← Voltar para detalhes
+        </button>
+
+        <h1 class="task-edit-title">Editar Tarefa</h1>
+        <p class="task-edit-subtitle">
+          Ajuste título, descrição, tipo, prioridade, status e os detalhes
+          específicos conforme a subclasse <strong>BugTask</strong>,
+          <strong>FeatureTask</strong> ou <strong>DocumentationTask</strong>.
+        </p>
+
+        <div class="task-edit-meta-line">
+          <span class="task-edit-id">#{{ task!.id }}</span>
+          <span class="task-edit-pill">
+            {{ task!.type }}
+          </span>
+        </div>
+      </div>
+
+      <div class="task-edit-meta">
+        <span class="task-edit-chip">
+          OOP Task Manager • Edição de Tarefas
+        </span>
+      </div>
+    </header>
+
+    <div class="task-edit-card">
+      <form class="task-edit-form" (ngSubmit)="onSave()" novalidate>
+        <!-- Título -->
+        <div class="form-field">
+          <label for="title">Título da Tarefa</label>
+          <input
+            id="title"
+            type="text"
+            name="title"
+            [(ngModel)]="task!.title"
+            autocomplete="off"
+            required
+          />
+          <p class="field-hint">
+            Esse nome aparece na lista de tarefas e no dashboard.
+          </p>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-field">
+          <label for="description">Descrição</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="3"
+            [(ngModel)]="task!.description"
+            placeholder="Atualize o contexto, cenário de uso ou impacto da tarefa."
+          ></textarea>
+          <p class="field-hint">
+            Útil para dar mais clareza ao time sobre o que precisa ser feito.
+          </p>
+        </div>
+
+        <!-- Linha: tipo / prioridade / status / estimativa -->
+        <div class="form-field form-field-inline">
+          <!-- TIPO -->
+          <div class="form-field-half">
+            <label for="type">Tipo</label>
+            <select
+              id="type"
+              name="type"
+              [(ngModel)]="selectedType"
+              (ngModelChange)="onTypeChange($event)"
+            >
+              <option *ngFor="let t of typeOptions" [ngValue]="t">
+                {{ t }}
+              </option>
+            </select>
+            <p class="field-hint">
+              Define se a tarefa é um <code>BUG</code>, <code>FEATURE</code> ou
+              <code>DOCUMENTATION</code>.
+            </p>
+          </div>
+
+          <!-- PRIORIDADE -->
+          <div class="form-field-half">
+            <label for="priority">Prioridade</label>
+            <select
+              id="priority"
+              name="priority"
+              [(ngModel)]="selectedPriority"
+              (ngModelChange)="onPriorityChange($event)"
+            >
+              <option *ngFor="let p of priorityOptions" [ngValue]="p">
+                {{ p }}
+              </option>
+            </select>
+            <p class="field-hint">
+              Use <code>CRITICAL</code> para itens que bloqueiam o fluxo do time.
+            </p>
+          </div>
+
+          <!-- STATUS -->
+          <div class="form-field-half">
+            <label for="status">Status</label>
+            <select
+              id="status"
+              name="status"
+              [(ngModel)]="selectedStatus"
+              (ngModelChange)="onStatusChange($event)"
+            >
+              <option [ngValue]="''" disabled>Selecione o status</option>
+              <option
+                *ngFor="let s of statusOptions"
+                [ngValue]="s.value"
+              >
+                {{ s.label }}
+              </option>
+            </select>
+            <p class="field-hint">
+              Ex.: <code>NÃO INICIADO</code>, <code>EM ANDAMENTO</code>,
+              <code>PARADO</code>, <code>CONCLUÍDO</code>.
+            </p>
+          </div>
+
+          <!-- ESTIMATIVA -->
+          <div class="form-field-half">
+            <label for="estimate">Estimativa (h)</label>
+            <input
+              id="estimate"
+              type="number"
+              min="0"
+              step="0.5"
+              name="estimatedHours"
+              [(ngModel)]="task!.estimatedHours"
+            />
+            <p class="field-hint">
+              Opcional, mas aparece no dashboard e na lista de tarefas.
+            </p>
+          </div>
+        </div>
+
+        <!-- Detalhes específicos: BUG -->
+        <div class="form-field" *ngIf="bugTask as bug">
+          <h2 class="section-title">Detalhes de Bug</h2>
+
+          <label for="severity">Severidade</label>
+          <input
+            id="severity"
+            type="text"
+            name="severity"
+            [(ngModel)]="bug.severity"
+            placeholder="Ex.: LOW, MEDIUM, HIGH, CRITICAL"
+          />
+
+          <label for="steps" class="mt-6">Passos para reproduzir</label>
+          <textarea
+            id="steps"
+            rows="3"
+            name="stepsToReproduce"
+            [(ngModel)]="bug.stepsToReproduce"
+            placeholder="Descreva como reproduzir o problema."
+          ></textarea>
+        </div>
+
+        <!-- Detalhes específicos: FEATURE -->
+        <div class="form-field" *ngIf="featureTask as feat">
+          <h2 class="section-title">Detalhes de Feature</h2>
+
+          <label for="complexity">Complexidade (1–5)</label>
+          <input
+            id="complexity"
+            type="number"
+            min="1"
+            max="5"
+            name="complexity"
+            [(ngModel)]="feat.complexity"
+          />
+
+          <label for="businessValue" class="mt-6">
+            Valor de negócio (1–5)
+          </label>
+          <input
+            id="businessValue"
+            type="number"
+            min="1"
+            max="5"
+            name="businessValue"
+            [(ngModel)]="feat.businessValue"
+          />
+        </div>
+
+        <!-- Detalhes específicos: DOCUMENTATION -->
+        <div class="form-field" *ngIf="documentationTask as doc">
+          <h2 class="section-title">Detalhes de Documentação</h2>
+
+          <label for="pages">Páginas estimadas</label>
+          <input
+            id="pages"
+            type="number"
+            min="0"
+            name="pages"
+            [(ngModel)]="doc.pages"
+          />
+
+          <div class="checkbox-row">
+            <input
+              id="isTechnical"
+              type="checkbox"
+              name="isTechnical"
+              [(ngModel)]="doc.isTechnical"
+            />
+            <label for="isTechnical">
+              Documentação técnica (desmarcado = funcional)
+            </label>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="form-feedback" *ngIf="saveError || saveSuccess">
+          <p *ngIf="saveError" class="feedback feedback-error">
+            {{ saveError }}
+          </p>
+          <p *ngIf="saveSuccess" class="feedback feedback-success">
+            {{ saveSuccess }}
+          </p>
+        </div>
+
+        <!-- Ações -->
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="isSaving"
+          >
+            <span *ngIf="!isSaving">Salvar alterações</span>
+            <span *ngIf="isSaving">Salvando...</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-ghost"
+            (click)="onCancel()"
+            [disabled]="isSaving"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</section>
+
+<!-- Loading / Not found mantidos iguais -->
+<ng-template #loadingTpl>
+  <div class="task-edit-loading">
+    Carregando dados da tarefa para edição...
+  </div>
+</ng-template>
+
+<ng-template #notFoundTpl>
+  <div class="task-edit-not-found">
+    <p>A tarefa solicitada não foi encontrada.</p>
+    <button type="button" class="back-link" (click)="onCancel()">
+      ← Voltar para lista de tarefas
+    </button>
+  </div>
+</ng-template>

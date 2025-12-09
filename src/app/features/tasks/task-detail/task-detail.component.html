@@ -1,0 +1,269 @@
+<!-- src/app/features/tasks/task-detail/task-detail.component.html -->
+
+<section class="task-detail-root" *ngIf="!isLoading; else loadingTpl">
+  <!-- Se não encontrou a tarefa -->
+  <ng-container *ngIf="hasTask; else notFoundTpl">
+    <header class="task-detail-header">
+      <!-- Lado esquerdo: voltar + título + meta -->
+      <div class="task-detail-title-block">
+        <button type="button" class="back-link" (click)="goBack()">
+          ← Voltar para lista de tarefas
+        </button>
+
+        <h1 class="task-detail-title">
+          {{ task!.title }}
+        </h1>
+
+        <div class="task-detail-meta-line">
+          <span class="task-id">#{{ task!.id }}</span>
+
+          <!-- Tipo -->
+          <span class="pill" [ngClass]="typeClass">
+            {{ task!.type }}
+          </span>
+
+          <!-- Prioridade -->
+          <span class="pill" [ngClass]="priorityClass">
+            {{ task!.priority }}
+          </span>
+
+          <!-- Status (label amigável) -->
+          <span class="pill" [ngClass]="statusClass">
+            {{ statusLabel }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Lado direito: responsável + estimativa + ações -->
+      <div class="task-detail-side">
+        <div class="task-detail-responsible">
+          <span class="label">Responsável</span>
+          <span class="value">
+            {{ task!.responsible?.name || 'Não atribuído' }}
+          </span>
+        </div>
+
+        <div class="task-detail-estimate">
+          <span class="label">Estimativa</span>
+          <span class="value">
+            {{ task!.estimatedHours || 0 }} h
+          </span>
+        </div>
+
+        <div class="task-detail-actions">
+          <!-- Iniciar → EM ANDAMENTO -->
+          <button
+            type="button"
+            class="btn-action btn-secondary"
+            (click)="onStartTask()"
+            [disabled]="!canStart"
+          >
+            Iniciar
+          </button>
+
+          <!-- Novos botões de navegação -->
+          <button
+            type="button"
+            class="btn-action btn-secondary"
+            (click)="goToEdit()"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            class="btn-action btn-danger"
+            (click)="goToDelete()"
+          >
+            Excluir
+          </button>
+
+          <!-- Parar → PARADO -->
+          <button
+            type="button"
+            class="btn-action btn-secondary"
+            (click)="onBlockTask()"
+            [disabled]="!canBlock"
+          >
+            Parar
+          </button>
+
+          <button
+            type="button"
+            class="btn-action btn-secondary"
+            (click)="onReopenTask()"
+            [disabled]="!canReopen"
+          >
+            Reabrir
+          </button>
+
+          <!-- Concluir → DONE -->
+          <button
+            type="button"
+            class="btn-action btn-primary"
+            (click)="onCompleteTask()"
+            [disabled]="!canComplete"
+          >
+            Concluir
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="task-detail-grid">
+      <!-- Card: Descrição + datas -->
+      <article class="task-card">
+        <h2>Descrição</h2>
+
+        <p class="description">
+          {{ task!.description || 'Sem descrição cadastrada para esta tarefa.' }}
+        </p>
+
+        <div class="dates">
+          <div>
+            <span class="label">Criada em</span>
+            <span class="value">
+              {{ formatDate(taskCreatedAt) }}
+            </span>
+          </div>
+
+          <div>
+            <span class="label">Atualizada em</span>
+            <span class="value">
+              {{ formatDate(taskUpdatedAt) }}
+            </span>
+          </div>
+
+          <div>
+            <span class="label">Concluída em</span>
+            <span class="value">
+              {{ formatDate(taskClosedAt) }}
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card: Detalhes técnicos (por tipo) + Tags -->
+      <article class="task-card">
+        <h2>Detalhes técnicos</h2>
+
+        <!-- BUG -->
+        <div *ngIf="bugTask as bug" class="multiline-block">
+          <span class="label-inline">Severidade</span>
+          <span class="value">
+            {{ bug.severity || 'N/A' }}
+          </span>
+
+          <span class="label-inline">Passos para reproduzir</span>
+          <p class="preformatted">
+            {{
+              bug.stepsToReproduce ||
+                'Nenhum passo de reprodução informado.'
+            }}
+          </p>
+        </div>
+
+        <!-- FEATURE -->
+        <div *ngIf="featureTask as feat" class="multiline-block">
+          <span class="label-inline">Complexidade (1–5)</span>
+          <span class="value">
+            {{ feat.complexity || 'N/A' }}
+          </span>
+
+          <span class="label-inline">Valor de negócio (1–5)</span>
+          <span class="value">
+            {{ feat.businessValue || 'N/A' }}
+          </span>
+        </div>
+
+        <!-- DOCUMENTATION -->
+        <div *ngIf="documentationTask as doc" class="multiline-block">
+          <span class="label-inline">Páginas estimadas</span>
+          <span class="value">
+            {{ doc.pages || 'N/A' }}
+          </span>
+
+          <span class="label-inline">Tipo</span>
+          <span class="value">
+            {{
+              doc.isTechnical
+                ? 'Documentação técnica'
+                : 'Documentação funcional'
+            }}
+          </span>
+        </div>
+      </article>
+
+      <!-- Card: Comentários -->
+      <article class="task-card task-card-comments">
+        <h2>Comentários</h2>
+
+        <div class="multiline-block">
+          <label class="label-inline" for="new-comment">
+            Novo comentário
+          </label>
+          <textarea
+            id="new-comment"
+            rows="3"
+            [(ngModel)]="newCommentContent"
+            placeholder="Adicione um comentário sobre esta tarefa..."
+            class="preformatted"
+          ></textarea>
+
+          <div *ngIf="commentError" class="muted">
+            {{ commentError }}
+          </div>
+
+          <button
+            type="button"
+            class="btn-action btn-secondary"
+            style="margin-top: 6px"
+            (click)="onAddComment()"
+          >
+            Adicionar comentário
+          </button>
+        </div>
+
+        <hr style="margin: 10px 0; border-color: rgba(30, 41, 59, 0.8)" />
+
+        <ul *ngIf="comments.length; else noCommentsTpl" class="comments-list">
+          <li *ngFor="let comment of comments" class="comment-item">
+            <div class="comment-header">
+              <span class="comment-author">
+                {{ comment.author?.name || 'Anônimo' }}
+              </span>
+              <span class="comment-date">
+                {{ formatDate(comment.createdAt) }}
+              </span>
+            </div>
+            <div class="comment-content">
+              {{ comment.content }}
+            </div>
+          </li>
+        </ul>
+
+        <ng-template #noCommentsTpl>
+          <p class="muted">Nenhum comentário ainda. Seja o primeiro a comentar.</p>
+        </ng-template>
+      </article>
+    </div>
+  </ng-container>
+</section>
+
+<!-- Template de loading -->
+<ng-template #loadingTpl>
+  <div class="task-detail-loading">
+    Carregando detalhes da tarefa...
+  </div>
+</ng-template>
+
+<!-- Template de not found -->
+<ng-template #notFoundTpl>
+  <div class="task-detail-not-found">
+    <p>A tarefa solicitada não foi encontrada.</p>
+    <button type="button" class="back-link" (click)="goBack()">
+      ← Voltar para lista de tarefas
+    </button>
+  </div>
+</ng-template>

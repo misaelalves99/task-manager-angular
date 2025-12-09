@@ -1,0 +1,149 @@
+<!-- src/app/features/tasks/task-list/task-list.component.html -->
+
+<section class="tasks-root">
+  <header class="tasks-header">
+    <div>
+      <h1 class="tasks-title">Tarefas</h1>
+      <p class="tasks-subtitle">
+        Visualize as tarefas criadas. Use os filtros
+        para focar em bugs, abertas ou de alta prioridade.
+      </p>
+    </div>
+
+    <div class="tasks-actions">
+      <button
+        type="button"
+        class="filter-chip filter-chip-primary"
+        (click)="goToCreate()"
+      >
+        + Nova tarefa
+      </button>
+
+      <span class="tasks-counter">
+        Total: {{ allTasks().length }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Filtros -->
+  <div class="tasks-filters">
+    <button
+      type="button"
+      class="filter-chip"
+      [class.filter-chip-active]="filter() === 'all'"
+      (click)="setFilter('all')"
+    >
+      Todas
+    </button>
+
+    <button
+      type="button"
+      class="filter-chip"
+      [class.filter-chip-active]="filter() === 'open'"
+      (click)="setFilter('open')"
+    >
+      Abertas
+    </button>
+
+    <button
+      type="button"
+      class="filter-chip"
+      [class.filter-chip-active]="filter() === 'bugs'"
+      (click)="setFilter('bugs')"
+    >
+      Bugs
+    </button>
+
+    <button
+      type="button"
+      class="filter-chip"
+      [class.filter-chip-active]="filter() === 'highPriority'"
+      (click)="setFilter('highPriority')"
+    >
+      Alta prioridade
+    </button>
+  </div>
+
+  <!-- Lista de tarefas -->
+  <div
+    class="tasks-table-wrapper"
+    *ngIf="filteredTasks().length; else emptyState"
+  >
+    <table class="tasks-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Tipo</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Responsável</th>
+          <th>Estimativa (h)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let task of filteredTasks()">
+          <td>#{{ task.id }}</td>
+
+          <td class="cell-title">
+            <a [routerLink]="['/tasks', task.id]" class="task-title-link">
+              <span class="task-title-text">{{ task.title }}</span>
+              <span class="cell-desc">
+                {{ task.description || '(sem descrição)' }}
+              </span>
+            </a>
+          </td>
+
+          <!-- TIPO usando Tag real -->
+          <td>
+            <span
+              class="pill pill-type"
+              [style.background-color]="getTypeColor(task)"
+              [style.border-color]="'rgba(15, 23, 42, 0.9)'"
+            >
+              {{ getTypeLabel(task) }}
+            </span>
+          </td>
+
+          <!-- PRIORIDADE usando Tag real -->
+          <td>
+            <span
+              class="pill pill-priority"
+              [style.background-color]="getPriorityColor(task)"
+              [style.border-color]="'rgba(15, 23, 42, 0.9)'"
+            >
+              {{ getPriorityLabel(task) }}
+            </span>
+          </td>
+
+          <!-- STATUS (sincronizado com Detail/Edit) -->
+          <td>
+            <span
+              class="pill"
+              [ngClass]="getStatusClass(task)"
+            >
+              {{ getStatusLabel(task) }}
+            </span>
+          </td>
+
+          <!-- RESPONSÁVEL -->
+          <td>
+            {{ task.responsible?.name || '—' }}
+          </td>
+
+          <!-- ESTIMATIVA -->
+          <td>
+            {{ task.estimatedHours || 0 }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="tasks-empty">
+      <p>Nenhuma tarefa encontrada para o filtro selecionado.</p>
+    </div>
+  </ng-template>
+</section>

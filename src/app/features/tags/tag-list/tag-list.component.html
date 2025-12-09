@@ -1,0 +1,201 @@
+<!-- src/app/features/tags/tag-list/tag-list.component.html -->
+
+<section class="tags-root">
+  <header class="tags-header">
+    <div>
+      <h1 class="tags-title">Tags</h1>
+      <p class="tags-subtitle">
+        Etiquetas usadas para classificar tarefas por
+        <strong>tipo</strong> e <strong>prioridade</strong>. Você
+        pode criar novas tags diretamente a partir deste painel.
+      </p>
+    </div>
+
+    <div class="tags-actions">
+      <button
+        type="button"
+        class="btn-new-tag"
+        [routerLink]="['/tags/new']"
+      >
+        <span class="btn-new-tag-icon">+</span>
+        <span>Nova tag</span>
+      </button>
+
+      <div class="tags-counter">
+        Total: {{ tags().length }}
+      </div>
+    </div>
+  </header>
+
+  <ng-container *ngIf="tags().length; else emptyState">
+    <div class="tags-sections">
+      <!-- Seção: Tags de Tipo -->
+      <section class="tags-section">
+        <header class="tags-section-header">
+          <div class="tags-section-text">
+            <h2 class="tags-section-title">Tags de Tipo</h2>
+            <p class="tags-section-subtitle">
+              Usadas para definir se a tarefa é <strong>BUG</strong>,
+              <strong>FEATURE</strong>, <strong>DOCUMENTATION</strong>,
+              <strong>ATUALIZAÇÃO</strong>, etc.
+            </p>
+          </div>
+          <span class="tags-section-count">
+            {{ typeTags.length }} tag(s)
+          </span>
+        </header>
+
+        <ng-container *ngIf="typeTags.length; else typeEmpty">
+          <div class="tags-grid">
+            <article class="tag-card" *ngFor="let tag of typeTags">
+              <div class="tag-header">
+                <div
+                  class="tag-color-dot"
+                  [style.background-color]="tag.color"
+                ></div>
+                <div class="tag-title-block">
+                  <h3 class="tag-name">{{ tag.name }}</h3>
+                  <p class="tag-id">ID #{{ tag.id }}</p>
+                </div>
+              </div>
+
+              <div class="tag-body">
+                <p class="tag-color-hex">
+                  Cor: <span>{{ tag.color }}</span>
+                </p>
+                <p class="tag-description">
+                  Categoria: <strong>Tipo</strong>. Usada para
+                  classificar tarefas como <strong>{{ tag.name }}</strong>.
+                </p>
+              </div>
+
+              <!-- Ações -->
+              <footer class="tag-actions">
+                <button
+                  type="button"
+                  class="icon-btn icon-btn-edit"
+                  [routerLink]="['/tags', tag.id, 'edit']"
+                  title="Editar tag"
+                >
+                  <lucide-icon
+                    [img]="editIcon"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="sr-only">Editar</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="icon-btn icon-btn-delete"
+                  [routerLink]="['/tags', tag.id, 'delete']"
+                  title="Excluir tag"
+                >
+                  <lucide-icon
+                    [img]="deleteIcon"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="sr-only">Excluir</span>
+                </button>
+              </footer>
+            </article>
+          </div>
+        </ng-container>
+
+        <ng-template #typeEmpty>
+          <div class="tags-empty-inline">
+            <p>Nenhuma tag de <strong>Tipo</strong> cadastrada.</p>
+            <p>Crie tags do tipo BUG, FEATURE, DOCUMENTATION, etc.</p>
+          </div>
+        </ng-template>
+      </section>
+
+      <!-- Seção: Tags de Prioridade -->
+      <section class="tags-section">
+        <header class="tags-section-header">
+          <div class="tags-section-text">
+            <h2 class="tags-section-title">Tags de Prioridade</h2>
+            <p class="tags-section-subtitle">
+              Usadas para definir o nível de criticidade:
+              <strong>BAIXO</strong>, <strong>MÉDIO</strong>,
+              <strong>ALTO</strong>, <strong>CRÍTICO</strong>,
+              <strong>MUITO ALTO</strong>, etc.
+            </p>
+          </div>
+          <span class="tags-section-count">
+            {{ priorityTags.length }} tag(s)
+          </span>
+        </header>
+
+        <ng-container *ngIf="priorityTags.length; else priorityEmpty">
+          <div class="tags-grid">
+            <article class="tag-card" *ngFor="let tag of priorityTags">
+              <div class="tag-header">
+                <div
+                  class="tag-color-dot"
+                  [style.background-color]="tag.color"
+                ></div>
+                <div class="tag-title-block">
+                  <h3 class="tag-name">{{ tag.name }}</h3>
+                  <p class="tag-id">ID #{{ tag.id }}</p>
+                </div>
+              </div>
+
+              <div class="tag-body">
+                <p class="tag-color-hex">
+                  Cor: <span>{{ tag.color }}</span>
+                </p>
+                <p class="tag-description">
+                  Categoria: <strong>Prioridade</strong>. Usada para
+                  destacar tarefas com prioridade
+                  <strong>{{ tag.name }}</strong>.
+                </p>
+              </div>
+
+              <!-- Ações -->
+              <footer class="tag-actions">
+                <button
+                  type="button"
+                  class="icon-btn icon-btn-edit"
+                  [routerLink]="['/tags', tag.id, 'edit']"
+                  title="Editar tag"
+                >
+                  <lucide-icon
+                    [img]="editIcon"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="sr-only">Editar</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="icon-btn icon-btn-delete"
+                  [routerLink]="['/tags', tag.id, 'delete']"
+                  title="Excluir tag"
+                >
+                  <lucide-icon
+                    [img]="deleteIcon"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="sr-only">Excluir</span>
+                </button>
+              </footer>
+            </article>
+          </div>
+        </ng-container>
+
+        <ng-template #priorityEmpty>
+          <div class="tags-empty-inline">
+            <p>Nenhuma tag de <strong>Prioridade</strong> cadastrada.</p>
+            <p>Crie tags como BAIXO, MÉDIO, ALTO, CRÍTICO, etc.</p>
+          </div>
+        </ng-template>
+      </section>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="tags-empty">
+      <p>Nenhuma tag encontrada. Verifique se o seed foi executado ou crie novas tags.</p>
+    </div>
+  </ng-template>
+</section>

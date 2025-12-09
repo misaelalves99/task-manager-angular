@@ -1,0 +1,189 @@
+<!-- src/app/features/dashboard/dashboard-page.component.html -->
+
+<section class="dashboard-root">
+  <header class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">Visão Geral</h1>
+      <p class="dashboard-subtitle">
+        Acompanhe todas as tarefas criadas para gerenciar o trabalho da sua empresa.
+      </p>
+    </div>
+
+    <div class="dashboard-meta">
+      <span class="dashboard-chip">
+        Task Manager • Dashboard
+      </span>
+    </div>
+  </header>
+
+  <!-- Cards principais -->
+  <section class="dashboard-grid">
+    <article class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total de Tarefas</span>
+        <span class="stat-icon">
+          <lucide-angular
+            [img]="totalIcon"
+            size="20"
+            strokeWidth="2.4"
+          ></lucide-angular>
+        </span>
+      </div>
+      <div class="stat-value">
+        {{ stats().totalTasks }}
+      </div>
+      <p class="stat-footer">
+        Inclui bugs, features e documentação.
+      </p>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Tarefas Abertas</span>
+        <span class="stat-icon">
+          <lucide-angular
+            [img]="openIcon"
+            size="20"
+            strokeWidth="2.4"
+          ></lucide-angular>
+        </span>
+      </div>
+      <div class="stat-value">
+        {{ stats().openTasks }}
+      </div>
+      <p class="stat-footer">
+        Tarefas com status diferente de <strong>DONE</strong>.
+      </p>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Alta Prioridade</span>
+        <span class="stat-icon">
+          <lucide-angular
+            [img]="priorityIcon"
+            size="20"
+            strokeWidth="2.4"
+          ></lucide-angular>
+        </span>
+      </div>
+      <div class="stat-value">
+        {{ stats().highPriorityTasks + stats().criticalTasks }}
+      </div>
+      <p class="stat-footer">
+        {{ stats().highPriorityTasks }} HIGH •
+        {{ stats().criticalTasks }} CRITICAL
+      </p>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Por Tipo</span>
+        <span class="stat-icon">
+          <lucide-angular
+            [img]="typeIcon"
+            size="20"
+            strokeWidth="2.4"
+          ></lucide-angular>
+        </span>
+      </div>
+      <div class="stat-value stat-value-small">
+        <span>🐞 {{ stats().totalBugs }}</span>
+        <span>🌟 {{ stats().totalFeatures }}</span>
+        <span>📚 {{ stats().totalDocs }}</span>
+      </div>
+      <p class="stat-footer">Distribuição por categoria.</p>
+    </article>
+  </section>
+
+  <!-- Últimas tarefas (mesma tabela/estilo da task-list, mas usando latestTasks()) -->
+  <section class="dashboard-latest">
+    <header class="latest-header">
+      <h2>Últimas tarefas criadas</h2>
+      <p>Baseado nos dados de exemplo gerados pelo seed.</p>
+    </header>
+
+    <div
+      class="tasks-table-wrapper"
+      *ngIf="latestTasks().length; else emptyState"
+    >
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Prioridade</th>
+            <th>Status</th>
+            <th>Responsável</th>
+            <th>Estimativa (h)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of latestTasks()">
+            <td>#{{ task.id }}</td>
+
+            <td class="cell-title">
+              <a
+                [routerLink]="['/tasks', task.id]"
+                class="task-title-link"
+              >
+                <span class="task-title-text">
+                  {{ task.title }}
+                </span>
+                <span class="cell-desc">
+                  {{ task.description || '(sem descrição)' }}
+                </span>
+              </a>
+            </td>
+
+            <!-- Tipo: usando Tag real + cor dinâmica -->
+            <td>
+              <span
+                class="pill pill-type"
+                [style.background-color]="getTypeColor(task)"
+                [style.border-color]="'rgba(15, 23, 42, 0.9)'"
+              >
+                {{ getTypeLabel(task) }}
+              </span>
+            </td>
+
+            <!-- Prioridade: usando Tag real + cor dinâmica -->
+            <td>
+              <span
+                class="pill pill-priority"
+                [style.background-color]="getPriorityColor(task)"
+                [style.border-color]="'rgba(15, 23, 42, 0.9)'"
+              >
+                {{ getPriorityLabel(task) }}
+              </span>
+            </td>
+
+            <!-- Status com estilo fixo -->
+            <td>
+              <span
+                class="pill pill-status pill-status-{{ task.status | lowercase }}"
+              >
+                {{ task.status }}
+              </span>
+            </td>
+
+            <td>
+              {{ task.responsible?.name || '—' }}
+            </td>
+
+            <td>
+              {{ task.estimatedHours || 0 }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="latest-empty">
+        <p>Nenhuma tarefa encontrada. O seed ainda não foi executado.</p>
+      </div>
+    </ng-template>
+  </section>
+</section>

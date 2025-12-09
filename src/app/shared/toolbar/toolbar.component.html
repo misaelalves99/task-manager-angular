@@ -1,0 +1,41 @@
+<header class="toolbar-root">
+  <div class="toolbar-left">
+    <div class="toolbar-logo">
+      <span class="toolbar-logo-icon">
+        <lucide-angular
+          [img]="logoIcon"
+          size="20"
+          strokeWidth="2.6"
+        ></lucide-angular>
+      </span>
+
+      <div class="toolbar-logo-text">
+        <span class="toolbar-title">Task Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar-right">
+    <!-- USER PROFILE -->
+    <div class="toolbar-user" (click)="toggleMenu()" style="position: relative;">
+      <div class="toolbar-user-avatar">
+        <lucide-angular
+          [img]="userIcon"
+          size="16"
+          strokeWidth="2.4"
+        ></lucide-angular>
+      </div>
+      
+      <!-- MENU DROPDOWN -->
+      <div class="user-menu" *ngIf="menuOpen()">
+        <button
+          class="user-menu-item"
+          type="button"
+          (click)="logout($event)"
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

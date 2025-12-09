@@ -1,0 +1,30 @@
+/* src/app/app.component.css */
+
+.app-root {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #020617, #020617);
+}
+
+/* Se você tiver esse overlay, pode estilizar assim */
+.app-background-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at top,
+    rgba(56, 189, 248, 0.12),
+    transparent 55%
+  );
+  opacity: 0.9;
+  z-index: -1;
+}
+
+/* AQUI é o importante: nada de max-width, deixe 100% */
+.app-shell-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+}

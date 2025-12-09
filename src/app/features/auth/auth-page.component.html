@@ -1,0 +1,217 @@
+<!-- src/app/features/auth/auth-page.component.html -->
+
+<section class="auth-root">
+  <div class="auth-card">
+    <!-- Lado esquerdo: branding / mensagem -->
+    <div class="auth-hero">
+      <div class="auth-logo-pill">
+        <span class="auth-logo-icon">📋</span>
+        <span class="auth-logo-text">Task Manager</span>
+      </div>
+
+      <h1 class="auth-title">
+        Task Manager JS → Angular
+      </h1>
+
+      <p class="auth-subtitle">
+        Autenticação fake para estudos de
+        <strong>Orientação a Objetos</strong> e
+        <strong>Angular standalone</strong>. Nenhum dado é realmente enviado.
+      </p>
+
+      <ul class="auth-highlights">
+        <li>Arquitetura com <code>core/</code>, <code>features/</code> e <code>shared/</code></li>
+        <li>Componentes standalone e design moderno</li>
+        <li>Simulação de fluxo real de login/cadastro</li>
+      </ul>
+    </div>
+
+    <!-- Lado direito: formulário -->
+    <div class="auth-form-wrapper">
+      <!-- Tabs Login / Cadastro -->
+      <div class="auth-tabs">
+        <button
+          type="button"
+          class="auth-tab"
+          [class.is-active]="mode === 'login'"
+          (click)="setMode('login')"
+        >
+          <lucide-angular
+            [img]="loginIcon"
+            size="16"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Entrar</span>
+        </button>
+
+        <button
+          type="button"
+          class="auth-tab"
+          [class.is-active]="mode === 'register'"
+          (click)="setMode('register')"
+        >
+          <lucide-angular
+            [img]="registerIcon"
+            size="16"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Criar conta</span>
+        </button>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="onSubmit()" novalidate>
+        <!-- E-mail -->
+        <div class="form-field">
+          <label for="email">E-mail</label>
+          <div class="field-control with-icon">
+            <lucide-angular
+              [img]="mailIcon"
+              size="16"
+              strokeWidth="2.4"
+              class="field-icon"
+            ></lucide-angular>
+
+            <input
+              id="email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="seuemail@exemplo.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Senha -->
+        <div class="form-field">
+          <label for="password">Senha</label>
+          <div class="field-control with-icon">
+            <lucide-angular
+              [img]="lockIcon"
+              size="16"
+              strokeWidth="2.4"
+              class="field-icon"
+            ></lucide-angular>
+
+            <input
+              id="password"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Esqueceu senha + alternar modo -->
+        <div class="auth-links-row">
+          <button
+            type="button"
+            class="link-button"
+            (click)="onForgotPassword()"
+          >
+            Esqueceu a senha?
+          </button>
+
+          <button
+            type="button"
+            class="link-button"
+            *ngIf="mode === 'login'"
+            (click)="setMode('register')"
+          >
+            Não tem uma conta? <strong>Cadastre-se</strong>
+          </button>
+
+          <button
+            type="button"
+            class="link-button"
+            *ngIf="mode === 'register'"
+            (click)="setMode('login')"
+          >
+            Já tem uma conta? <strong>Entrar</strong>
+          </button>
+        </div>
+
+        <!-- Feedback -->
+        <div class="auth-feedback" *ngIf="errorMessage || successMessage">
+          <p *ngIf="errorMessage" class="feedback feedback-error">
+            {{ errorMessage }}
+          </p>
+          <p *ngIf="successMessage" class="feedback feedback-success">
+            {{ successMessage }}
+          </p>
+        </div>
+
+        <!-- Botão principal -->
+        <button
+          type="submit"
+          class="auth-submit-button"
+          [disabled]="isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">
+            {{ mode === 'login' ? 'Entrar na conta' : 'Criar conta' }}
+          </span>
+          <span *ngIf="isSubmitting">
+            Processando...
+          </span>
+        </button>
+      </form>
+
+      <!-- Separador -->
+      <div class="auth-divider">
+        <span></span>
+        <span>ou continue com</span>
+        <span></span>
+      </div>
+
+      <!-- Logins sociais -->
+      <div class="auth-social-row">
+        <button
+          type="button"
+          class="social-button google"
+          (click)="onSocialLogin('google')"
+        >
+          <lucide-angular
+            [img]="googleIcon"
+            size="18"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Google</span>
+        </button>
+
+        <button
+          type="button"
+          class="social-button facebook"
+          (click)="onSocialLogin('facebook')"
+        >
+          <lucide-angular
+            [img]="facebookIcon"
+            size="18"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Facebook</span>
+        </button>
+
+        <button
+          type="button"
+          class="social-button instagram"
+          (click)="onSocialLogin('instagram')"
+        >
+          <lucide-angular
+            [img]="instagramIcon"
+            size="18"
+            strokeWidth="2.4"
+          ></lucide-angular>
+          <span>Instagram</span>
+        </button>
+      </div>
+
+      <p class="auth-disclaimer">
+        Esta autenticação é apenas uma <strong>simulação</strong> para fins de estudo.
+      </p>
+    </div>
+  </div>
+</section>

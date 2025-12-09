@@ -1,0 +1,19 @@
+<!-- src/app/layout/shell/shell.component.html -->
+
+<div class="shell-root">
+  <!-- Topbar -->
+  <app-toolbar></app-toolbar>
+
+  <!-- Corpo: sidebar + conteúdo -->
+  <div class="shell-body">
+    <aside class="shell-sidebar">
+      <app-sidebar-nav></app-sidebar-nav>
+    </aside>
+
+    <main class="shell-content">
+      <div class="shell-content-inner">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

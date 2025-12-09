@@ -1,0 +1,91 @@
+/* src/app/layout/sidebar-nav/sidebar-nav.component.css */
+
+.sidebar-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Seção principal */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  color: #94a3b8;
+}
+
+/* Itens */
+.sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #cbd5e1;
+  font-size: 14px;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.15s ease;
+}
+
+.sidebar-item:hover {
+  background: rgba(148, 163, 184, 0.12);
+  transform: translateX(2px);
+}
+
+.sidebar-item-active .sidebar-item {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(56, 189, 248, 0.3);
+  font-weight: 600;
+}
+
+.sidebar-item-active .sidebar-icon {
+  opacity: 1;
+}
+
+/* Ícones */
+.sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+}
+
+/* Rodapé */
+.sidebar-footer {
+  margin-top: 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  text-align: center;
+}
+
+.sidebar-footer-text {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.sidebar-footer-sub {
+  font-size: 11px;
+  color: #64748b;
+}

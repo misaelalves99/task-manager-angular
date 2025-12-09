@@ -1,0 +1,95 @@
+<!-- src/app/features/tags/tag-delete/tag-delete.component.html -->
+
+<section class="tag-delete-root" *ngIf="tag; else notFound">
+  <header class="tag-delete-header">
+    <div>
+      <h1 class="tag-delete-title">Excluir Tag</h1>
+      <p class="tag-delete-subtitle">
+        Confirme a exclusão da tag abaixo. Essa ação removerá a tag
+        da lista e das tarefas que a utilizam.
+      </p>
+    </div>
+
+    <div class="tag-delete-meta">
+      <span class="tag-delete-chip">
+        ID #{{ tag?.id }}
+      </span>
+    </div>
+  </header>
+
+  <div class="tag-delete-card">
+    <div class="tag-summary">
+      <div
+        class="tag-color-dot"
+        [style.background-color]="tag!.color"
+      ></div>
+      <div class="tag-summary-text">
+        <h2>{{ tag!.name }}</h2>
+        <p>Categoria: <strong>{{ tag!.category }}</strong></p>
+        <p>Cor: <code>{{ tag!.color }}</code></p>
+      </div>
+    </div>
+
+    <div class="tag-impacts" *ngIf="relatedTasks.length">
+      <p>
+        Esta tag está sendo usada em
+        <strong>{{ relatedTasks.length }}</strong> tarefa(s):
+      </p>
+      <ul>
+        <li *ngFor="let t of relatedTasks">
+          #{{ t.id }} — {{ t.title }}
+        </li>
+      </ul>
+      <p class="tag-impacts-warning">
+        Ao excluir, a tag será removida dessas tarefas. As tarefas em si
+        continuarão existindo.
+      </p>
+    </div>
+
+    <div class="tag-impacts" *ngIf="!relatedTasks.length">
+      <p>Esta tag não está sendo usada em nenhuma tarefa.</p>
+    </div>
+
+    <!-- Feedback -->
+    <div class="form-feedback" *ngIf="errorMessage || successMessage">
+      <p *ngIf="errorMessage" class="feedback feedback-error">
+        {{ errorMessage }}
+      </p>
+      <p *ngIf="successMessage" class="feedback feedback-success">
+        {{ successMessage }}
+      </p>
+    </div>
+
+    <!-- Ações -->
+    <div class="delete-actions">
+      <button
+        type="button"
+        class="btn-danger"
+        (click)="onConfirmDelete()"
+        [disabled]="isDeleting"
+      >
+        <span *ngIf="!isDeleting">Excluir definitivamente</span>
+        <span *ngIf="isDeleting">Excluindo...</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn-ghost"
+        (click)="onCancel()"
+        [disabled]="isDeleting"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFound>
+  <div class="tag-delete-not-found">
+    <h2>Tag não encontrada</h2>
+    <p>
+      Verifique se o endereço está correto ou volte para a lista de tags.
+    </p>
+    <a [routerLink]="['/tags']" class="btn-back">Voltar para Tags</a>
+  </div>
+</ng-template>

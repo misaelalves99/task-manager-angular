@@ -1,0 +1,73 @@
+<!-- src/app/features/tasks/task-delete/task-delete.component.html -->
+
+<section class="task-delete-root" *ngIf="!isLoading; else loadingTpl">
+  <ng-container *ngIf="hasTask; else notFoundTpl">
+    <header class="task-delete-header">
+      <button type="button" class="back-link" (click)="onCancel()">
+        ← Voltar para detalhes
+      </button>
+
+      <h1 class="page-title">Excluir tarefa</h1>
+      <p class="page-subtitle">
+        Esta ação não pode ser desfeita. Confirme se deseja realmente remover a
+        tarefa do Task Manager.
+      </p>
+    </header>
+
+    <article class="task-delete-card">
+      <div class="task-summary">
+        <div class="task-summary-header">
+          <span class="task-id">#{{ task!.id }}</span>
+          <span class="task-title">{{ task!.title }}</span>
+        </div>
+
+        <p class="task-description">
+          {{ task!.description || 'Sem descrição cadastrada para esta tarefa.' }}
+        </p>
+      </div>
+
+      <div class="delete-warning">
+        Tem certeza de que deseja excluir esta tarefa?
+        <br />
+        <strong>Essa operação é permanente.</strong>
+      </div>
+
+      <div *ngIf="deleteError" class="delete-error">
+        {{ deleteError }}
+      </div>
+
+      <div class="delete-actions">
+        <button
+          type="button"
+          class="btn-action btn-secondary"
+          (click)="onCancel()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="btn-action btn-danger"
+          (click)="onConfirmDelete()"
+        >
+          Confirmar exclusão
+        </button>
+      </div>
+    </article>
+  </ng-container>
+</section>
+
+<ng-template #loadingTpl>
+  <div class="task-detail-loading">
+    Carregando tarefa para exclusão...
+  </div>
+</ng-template>
+
+<ng-template #notFoundTpl>
+  <div class="task-detail-not-found">
+    <p>A tarefa solicitada não foi encontrada.</p>
+    <button type="button" class="back-link" (click)="onCancel()">
+      ← Voltar para lista de tarefas
+    </button>
+  </div>
+</ng-template>

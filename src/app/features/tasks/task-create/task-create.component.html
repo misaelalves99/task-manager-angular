@@ -1,0 +1,233 @@
+<!-- src/app/features/tasks/task-create/task-create.component.html -->
+
+<section class="task-create-root">
+  <header class="task-create-header">
+    <div>
+      <h1 class="task-create-title">Nova Tarefa</h1>
+      <p class="task-create-subtitle">
+        Crie uma tarefa associando tipo, prioridade, responsável e estimativa usando o
+        mesmo sistema de tags da página <strong>Tags</strong>.
+      </p>
+    </div>
+
+    <div class="task-create-meta">
+      <span class="task-create-chip">
+        Task Manager • Tarefas com Tags Dinâmicas
+      </span>
+    </div>
+  </header>
+
+  <div class="task-create-card">
+    <form class="task-create-form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Título -->
+      <div class="form-field">
+        <label for="title">Título da Tarefa</label>
+        <input
+          id="title"
+          type="text"
+          name="title"
+          [(ngModel)]="title"
+          placeholder="Ex.: Corrigir bug de login, Implementar tela de relatório..."
+          autocomplete="off"
+          required
+        />
+        <p class="field-hint">
+          Dê um título claro e direto. Esse nome aparecerá na lista de tarefas.
+        </p>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-field">
+        <label for="description">Descrição</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="3"
+          [(ngModel)]="description"
+          placeholder="Explique o contexto, cenário de uso ou impacto da tarefa."
+        ></textarea>
+        <p class="field-hint">
+          Opcional, mas recomendado para tarefas mais complexas ou críticas.
+        </p>
+      </div>
+
+      <!-- Tipo da tarefa (Tag TYPE) -->
+      <div class="form-field form-field-inline">
+        <div class="form-field-half">
+          <label for="typeTagId">Tipo de tarefa (Tag)</label>
+          <select
+            id="typeTagId"
+            name="typeTagId"
+            [(ngModel)]="typeTagId"
+            required
+          >
+            <option [ngValue]="null" disabled>Selecione o tipo</option>
+            <option *ngFor="let tag of typeTags" [ngValue]="tag.id">
+              {{ tag.name }}
+            </option>
+          </select>
+          <p class="field-hint">
+            Apenas tags cadastradas como <strong>Tipo</strong> aparecem aqui.
+            Ex.: <code>BUG</code>, <code>FEATURE</code>, <code>DOCUMENTATION</code>,
+            <code>ATUALIZAÇÃO</code> etc.
+          </p>
+        </div>
+
+        <!-- Preview visual da Tag de Tipo -->
+        <div class="form-field-half">
+          <label>Preview do Tipo</label>
+          <div class="tag-preview-row" *ngIf="currentTypeTag; else noTypeTag">
+            <span
+              class="pill pill-preview"
+              [style.background-color]="currentTypeTag!.color"
+            >
+              {{ currentTypeTag!.name }}
+            </span>
+          </div>
+          <ng-template #noTypeTag>
+            <p class="field-hint">
+              Nenhuma tag de tipo selecionada no momento.
+            </p>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Prioridade da tarefa (Tag PRIORITY) -->
+      <div class="form-field form-field-inline">
+        <div class="form-field-half">
+          <label for="priorityTagId">Prioridade (Tag)</label>
+          <select
+            id="priorityTagId"
+            name="priorityTagId"
+            [(ngModel)]="priorityTagId"
+            required
+          >
+            <option [ngValue]="null" disabled>Selecione a prioridade</option>
+            <option *ngFor="let tag of priorityTags" [ngValue]="tag.id">
+              {{ tag.name }}
+            </option>
+          </select>
+          <p class="field-hint">
+            Apenas tags cadastradas como <strong>Prioridade</strong> aparecem aqui.
+            Ex.: <code>BAIXO</code>, <code>MÉDIO</code>, <code>ALTO</code>,
+            <code>CRÍTICO</code>, <code>MUITO ALTO</code> etc.
+          </p>
+        </div>
+
+        <!-- Preview visual da Tag de Prioridade -->
+        <div class="form-field-half">
+          <label>Preview da Prioridade</label>
+          <div
+            class="tag-preview-row"
+            *ngIf="currentPriorityTag; else noPriorityTag"
+          >
+            <span
+              class="pill pill-preview"
+              [style.background-color]="currentPriorityTag!.color"
+            >
+              {{ currentPriorityTag!.name }}
+            </span>
+          </div>
+          <ng-template #noPriorityTag>
+            <p class="field-hint">
+              Nenhuma tag de prioridade selecionada no momento.
+            </p>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- 🔥 Status da tarefa -->
+      <div class="form-field form-field-inline">
+        <div class="form-field-half">
+          <label for="status">Status</label>
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="status"
+            required
+          >
+            <!-- aqui usamos null pra bater com o tipo TaskStatus | null no TS -->
+            <option [ngValue]="null" disabled>Selecione o status</option>
+            <option *ngFor="let opt of statusOptions" [ngValue]="opt.value">
+              {{ opt.label }}
+            </option>
+          </select>
+          <p class="field-hint">
+            Defina o estágio atual da tarefa:
+            <code>NÃO INICIADO</code>, <code>EM ANDAMENTO</code>,
+            <code>PARADO</code> ou <code>CONCLUÍDO</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Responsável + Estimativa -->
+      <div class="form-field form-field-inline">
+        <!-- Responsável -->
+        <div class="form-field-half">
+          <label for="responsibleId">Responsável</label>
+          <select
+            id="responsibleId"
+            name="responsibleId"
+            [(ngModel)]="responsibleUserId"
+          >
+            <option [ngValue]="null">Sem responsável</option>
+            <option *ngFor="let user of users" [ngValue]="user.id">
+              {{ user.name }} ({{ user.role }})
+            </option>
+          </select>
+          <p class="field-hint">
+            Opcional. Defina quem será o responsável principal pela tarefa.
+          </p>
+        </div>
+
+        <!-- Estimativa (h) -->
+        <div class="form-field-half">
+          <label for="estimateHours">Estimativa (h)</label>
+          <input
+            id="estimateHours"
+            type="number"
+            name="estimateHours"
+            min="0"
+            step="0.5"
+            [(ngModel)]="estimateHours"
+            placeholder="Ex.: 2, 4, 8..."
+          />
+          <p class="field-hint">
+            Opcional. Se não informado, o sistema tenta estimar automaticamente.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="form-feedback" *ngIf="errorMessage || successMessage">
+        <p *ngIf="errorMessage" class="feedback feedback-error">
+          {{ errorMessage }}
+        </p>
+        <p *ngIf="successMessage" class="feedback feedback-success">
+          {{ successMessage }}
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">Salvar Tarefa</span>
+          <span *ngIf="isSubmitting">Salvando...</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost"
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
